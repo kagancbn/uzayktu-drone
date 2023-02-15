@@ -8,7 +8,7 @@ import time
 import re
 import multiprocessing
 from pymavlink import mavutil
-
+#import insanTespit.servo as servo
 def connectToVehicle():
 	iha = connect('127.0.0.1:14550', wait_ready=True) # 127.0.0.1:14550 -> değiştirilecek
 	return iha
@@ -103,7 +103,7 @@ iha = connectToVehicle()
 
 
 #kalkış yap
-genelHareketler.takeoff(3,iha)
+genelHareketler.takeoff(5,iha)
 
 #konumu tanımla
 konum = iha.location.global_relative_frame # -> güncel konum
@@ -125,16 +125,17 @@ alanTarama.alanTaraKare(20,iha,konum)
 
 smallMove = 0.000009
 
-konum.alt = 3
+konum.alt = 5
 while True:
 	if(iha.mode == "BRAKE"):
 		#iha.simple_goto(konum)
-		
+		time.sleep(3)
+		#servo.runServo()
 		time.sleep(5)
 		komut = iha.commands
 		komut.clear()
 		time.sleep(1)
-		komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, konum.lat, konum.lon, 3))
+		komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, konum.lat, konum.lon, 5))
 		#komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, konum.lat, konum.lon, 0))
 		time.sleep(1)
 		komut.upload()

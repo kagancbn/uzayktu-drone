@@ -15,9 +15,9 @@ def alanTaraKare(uzunluk, iha, ilkKonum):
     komut.clear()
     time.sleep(1)
 
-    komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, 0, 3))
+    #komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, 0, 5))
 
-    komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, ilkKonum.lat, ilkKonum.lon, 3))
+    komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, ilkKonum.lat, ilkKonum.lon, 5))
 
 
     uzunlukDunya = uzunluk*movementConstant
@@ -29,11 +29,11 @@ def alanTaraKare(uzunluk, iha, ilkKonum):
     while(i<iterasyon):
         # enlem hareket
         lat = lat + uzunlukDunya
-        komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, lat, lon, 3))
+        komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, lat, lon, 5))
         
         # boylam hareket
         lon= lon + smallMove
-        komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, lat, lon, 3))
+        komut.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, lat, lon, 5))
 
         # hareket yönü çevrimi
         uzunlukDunya=-uzunlukDunya
@@ -42,7 +42,7 @@ def alanTaraKare(uzunluk, iha, ilkKonum):
 
     komut.upload()
     print("Komutlar yukleniyor")
-    iha.parameters['WPNAV_SPEED'] = 500       
+    iha.parameters['WPNAV_SPEED'] = 100       
     iha.mode=VehicleMode("AUTO")
     # while (iha.mode==VehicleMode("AUTO")):
     #     next_waypoint = komut.next
